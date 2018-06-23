@@ -24,6 +24,7 @@ const externals = fs
 externals['react-dom/server'] = 'commonjs react-dom/server'
 
 module.exports = {
+    mode: "development",
     name: 'server',
     target: 'node',
     // devtool: 'source-map',

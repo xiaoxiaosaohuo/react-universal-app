@@ -7,6 +7,7 @@ const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 module.exports = {
   // REQUIRED: webpackHotServerMiddleware is expecting two webpack configs,
   // one with a name 'client', one with a name 'server'.
+  mode:"development",
   name: 'client',
   // Target browsers for our client config
   target: 'web',
@@ -20,17 +21,16 @@ module.exports = {
       },
         {
             test: /\.css$/,
-            use: ExtractCssChunks.extract({
-                use: [
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                        }
+            use: [
+                ExtractCssChunks.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: true,
+                        localIdentName: '[name]__[local]--[hash:base64:5]',
                     },
-                ]
-            })
+                },
+            ],
         }
     ]
   },
@@ -52,19 +52,31 @@ module.exports = {
     // REQUIRED: where files will be served from
     publicPath: '/static/'
   },
+    optimization:{
+        occurrenceOrder: true,
+        runtimeChunk: { name: 'runtime' },
+        usedExports: true,
+        concatenateModules: true,
+        splitChunks: {
+            cacheGroups: {
+                default: false
+        }
+    },
+  },
   plugins: [
     new WriteFilePlugin(),
     // REQUIRED: We have to initialize our ExtractCssChunks plugin
       new ExtractCssChunks({
           filename: "[name].css",
+          hot:true
       }),
 
     // REQUIRED: Needed to put webpack bootstrap code before chunks
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['bootstrap'],
-      filename: '[name].js',
-      minChunks: Infinity
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   names: ['bootstrap'],
+    //   filename: '[name].js',
+    //   minChunks: Infinity
+    // }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
         'process.env': {
