@@ -1,22 +1,27 @@
 import React from 'react';
 import universal from "react-universal-component";
+import { Switch, Route,Link } from 'react-router-dom';
 import styles from "./style.css";
 import Loading from "./Loading";
 import NotFound from "./NotFound";
-console.log(styles)
-const UniversalTab = universal(({tab})=>import(`./${tab}`),{
+const config = {
   minDelay: 300,
   alwaysDelay: true,//总是延迟500ms,即使加载过。
-  loadingTransition: false,
+  loadingTransition: true,
   error: NotFound,
+  loading: Loading,
+  onError:(error)=>console.log(error),
   //动态注入reducer
-  onLoad: (module, info, props, context)=>{
+  onLoad: (module, info, props, context) => {
     if (module.reducers) {
+      console.log(module.reducers)
       context.store.injectReducers(module.reducers)
     }
   }
-});
-
+};
+const Home = universal(({ props }) => import(`./Home`), config);
+const Foo = universal(({ props }) => import(`./Foo`), config);
+const Bar = universal(({ props }) => import(`./Bar`), config);
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -35,26 +40,25 @@ export default class App extends React.Component {
   render() {
     return (
       <div className={styles.mainContainer}>
-      {this.state.loading&&<Loading></Loading>}
-      <div className={this.state.loading? styles.loading:""}>
-          <UniversalTab 
-          tab={this.state.selected} 
-          onBefore={this.loadStart}
-          onAfter={this.loadEnd}
-          onError={(error) => console.log(error)}
-          />
-      </div>
+      
       
         {['Home', 'Foo', 'Bar',"Error"].map((tab, i) =>
-          <button
+          <Link
             key={i}
-            onClick={() => this.setState({ selected: tab,loading:false })}
+            to={`/${tab.toLowerCase()}`}
             //预加载
             // onMouseEnter={() => 
             // UniversalTab.preload({ tab: tab})}
           >
             {tab}
-          </button>)}
+          </Link>)}
+          
+        <Switch>
+          <Route exact path='/' component={Home} />
+          < Route path="/foo" exact component={Foo} />
+          < Route path="/home" exact component={Home} />
+          <Route path="/bar" exact component={Bar}/>
+        </Switch>
       </div>
     )
   }

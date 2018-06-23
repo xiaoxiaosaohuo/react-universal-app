@@ -1,5 +1,5 @@
 const initialState = {
-    selectedTab: 'Bar'
+    selectedTab: 'Foo'
 }
 
 export default (state = initialState, action) => {

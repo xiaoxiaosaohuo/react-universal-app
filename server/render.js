@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/server';
 import { flushChunkNames } from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 import App from '../src/components/App';
 import configureStore from '../src/store'
 
@@ -12,9 +13,13 @@ const store = configureStore()
 // For prod you'd pass in the clientStats manually after building with webpack.
 export default ({ clientStats }) => (req, res) => {
     const initialState = JSON.stringify(store.getState());
+    const context = {};
     const app = ReactDOM.renderToString(
     <Provider store={store}>
-        <App />
+        <StaticRouter location={req.url} context={context}>
+    
+          <App />
+        </StaticRouter>
     </Provider>)
     const chunkNames = flushChunkNames()
 
