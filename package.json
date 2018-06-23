@@ -7,7 +7,8 @@
     "prestart": "npm run clean",
     "start": "cross-env NODE_ENV=development node server/index.js",
     "clean": "rimraf buildClient buildServer",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git cz"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -25,7 +26,6 @@
     "style-loader": "^0.21.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "validate-commit-msg": "^2.14.0",
     "webpack": "^3.8.1",
     "webpack-flush-chunks": "1.2.3",
     "webpack-hot-middleware": "^2.22.2",
@@ -47,7 +47,20 @@
   },
   "author": "",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
+  },
   "config": {
+    "ghooks": {
+      "pre-commit": "gulp lint",
+      "commit-msg": "validate-commit-msg",
+      "pre-push": "make test",
+      "post-merge": "npm install",
+      "post-rewrite": "npm install"
+    },
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
