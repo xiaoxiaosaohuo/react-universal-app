@@ -18,6 +18,7 @@
     "express": "4.16.3",
     "extract-css-chunks-webpack-plugin": "^3.0.5",
     "ghooks": "^2.0.4",
+    "gulp": "^3.9.1",
     "history": "^4.7.2",
     "react": "16.4.0",
     "react-dom": "16.4.0",
@@ -48,13 +49,6 @@
   "author": "",
   "license": "ISC",
   "config": {
-    "ghooks": {
-      "pre-commit": "gulp lint",
-      "commit-msg": "validate-commit-msg",
-      "pre-push": "make test",
-      "post-merge": "npm install",
-      "post-rewrite": "npm install"
-    },
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
