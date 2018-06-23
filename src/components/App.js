@@ -32,7 +32,6 @@ export default class App extends React.Component {
       loading: false
     })
   }
-
   render() {
     return (
       <div className={styles.mainContainer}>
