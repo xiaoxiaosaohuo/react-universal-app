@@ -51,7 +51,7 @@ module.exports = {
                         loader: 'css-loader/locals',
                         options: {
                             modules: true,
-                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                            localIdentName: '[name]__[local]--[hash:base64:5]',
                         }
                     },
                 ]
@@ -63,9 +63,9 @@ module.exports = {
     },
     plugins: [
         new WriteFilePlugin(),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1
-        }),
+        // new webpack.optimize.LimitChunkCountPlugin({
+        //     maxChunks: 1, // Must be greater than or equal to one
+        // }),
 
         new webpack.DefinePlugin({
             'process.env': {
