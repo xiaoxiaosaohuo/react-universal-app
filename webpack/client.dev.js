@@ -52,24 +52,35 @@ module.exports = {
     // REQUIRED: where files will be served from
     publicPath: '/static/'
   },
-    optimization:{
-        occurrenceOrder: true,
-        runtimeChunk: { name: 'runtime' },
-        usedExports: true,
-        concatenateModules: true,
+    optimization: {
+        runtimeChunk: {
+            name: 'bootstrap'
+        },
         splitChunks: {
+            chunks: 'async',
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
             cacheGroups: {
-                default: false
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
         }
     },
-  },
   plugins: [
     new WriteFilePlugin(),
     // REQUIRED: We have to initialize our ExtractCssChunks plugin
-      new ExtractCssChunks({
-          filename: "[name].css",
-          hot:true
-      }),
+      new ExtractCssChunks(),
 
     // REQUIRED: Needed to put webpack bootstrap code before chunks
     // new webpack.optimize.CommonsChunkPlugin({

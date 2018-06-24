@@ -46,15 +46,13 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'css-loader/locals',
-                        options: {
-                            modules: true,
-                            localIdentName: '[name]__[local]--[hash:base64:5]',
-                        }
-                    },
-                ]
+                use: {
+                    loader: 'css-loader/locals',          // notice you're using the `locals` file as your loader
+                    options: {
+                        modules: true,
+                        localIdentName: '[name]__[local]--[hash:base64:5]'
+                    }
+                }
             }
         ]
     },
@@ -63,9 +61,9 @@ module.exports = {
     },
     plugins: [
         new WriteFilePlugin(),
-        // new webpack.optimize.LimitChunkCountPlugin({
-        //     maxChunks: 1, // Must be greater than or equal to one
-        // }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1, // Must be greater than or equal to one
+        }),
 
         new webpack.DefinePlugin({
             'process.env': {
