@@ -4,9 +4,6 @@ import { Switch, Route,Link } from 'react-router-dom';
 import styles from "./style.css";
 import Loading from "./Loading";
 import NotFound from "./NotFound";
-// import Home from "./Home";
-// import Foo from "./Foo";
-// import Bar from "./Bar";
 const config = {
   minDelay: 300,
   alwaysDelay: true,//总是延迟500ms,即使加载过。
@@ -30,7 +27,16 @@ export default class App extends React.Component {
     super(props)
     this.state = { selected: 'Home',loading:true }
   }
-
+  loadStart = ()=>{
+    this.setState({
+      loading:true
+    })
+  }
+  loadEnd = () => {
+    this.setState({
+      loading: false
+    })
+  }
   render() {
     return (
       <div className={styles.mainContainer}>
@@ -48,7 +54,7 @@ export default class App extends React.Component {
           </Link>)}
           
         <Switch>
-          <Route exact path='/' component={Foo} />
+          <Route exact path='/' component={Home} />
           < Route path="/foo" exact component={Foo} />
           < Route path="/home" exact component={Home} />
           <Route path="/bar" exact component={Bar}/>

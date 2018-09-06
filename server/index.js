@@ -17,7 +17,7 @@ app.use(webpackDevMiddleware(compiler, options));
 //热更新中间件
 app.use(webpackHotMiddleware(clientCompiler));
 // REQUIRED: For development only. Passes clientStats to render.js.
-app.use(webpackHotServerMiddleware(compiler))
+app.use(webpackHotServerMiddleware(compiler,));
 
 app.listen(3000, () => {
     console.log('Listening @ http://localhost:3000')
